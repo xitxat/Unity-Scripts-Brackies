@@ -11,7 +11,7 @@ public class CubeForceRandom : MonoBehaviour
     {
         
         float xForce = Random.Range(-sideForce, sideForce);
-        float yForce = Random.Range(upForce/2f, upForce);
+        float yForce = Random.Range(upForce/20f, upForce);
         float zForce = Random.Range(-sideForce, sideForce);
 
         Vector3 force = new Vector3(xForce, yForce, zForce);

@@ -4,16 +4,31 @@ using UnityEngine;
 
 /// <summary>
 /// Add this to Cube Spawner Obj + rigidbody
-///     
+/// Needs CubeForceRandom on prefab spawnee
+/// 
 /// </summary>
 public class CubeSpwaner : MonoBehaviour
 {
-    public GameObject cubePrefab;
+    // pre singleton
+    //public GameObject cubePrefab;
+
+    // performance
+    ObjectPooler objectPooler;
+
+    private void Start()
+    {
+        objectPooler = ObjectPooler.instance;
+
+    }
 
 
     private void FixedUpdate()
     {
         // 1 cube per update
-        Instantiate(cubePrefab, transform.position, Quaternion.identity);
+        // pre singleton
+        // Instantiate(cubePrefab, transform.position, Quaternion.identity);
+
+        objectPooler.SpawnFromPool("Cube", transform.position, Quaternion.identity);
+
     }
 }

@@ -12,6 +12,18 @@ public class ObjectPooler : MonoBehaviour
         public int size;
     }
 
+    #region Singleton
+
+    public static ObjectPooler instance;
+
+    private void Awake()
+        {
+        instance = this;
+        }
+    
+
+    #endregion
+
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
 
@@ -42,5 +54,33 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
+    // respawn inactive cubes
+    // return a GameObject
+    public GameObject SpawnFromPool (string tag, Vector3 position, Quaternion rotation)
+    {
+        // check for tag
+        if (!poolDictionary.ContainsKey(tag))
+        {
+            Debug.LogWarning("Pool w tag " + tag + " doesn't exist");
+            return null; // if no object
+        }
 
-}
+        // get the preFab
+        // recycle first objects out 
+        GameObject  objectToSpawn = poolDictionary[tag].Dequeue();
+
+        objectToSpawn.SetActive(true);
+        objectToSpawn.transform.position = position;
+        objectToSpawn.transform.rotation = rotation;
+
+        // and put back in queue
+        poolDictionary[tag].Enqueue(objectToSpawn);
+
+        return objectToSpawn;
+
+    }
+
+
+
+
+} // end ObjectPooler
